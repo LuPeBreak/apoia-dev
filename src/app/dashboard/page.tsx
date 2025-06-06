@@ -1,17 +1,14 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { Stats } from "./_components/analytics";
-import { DonationTable } from "./_components/donates";
-
-
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import { Stats } from './_components/analytics'
+import { DonationTable } from './_components/donates'
 
 export default async function Dashboard() {
+  const session = await auth()
 
-  const session = await auth();
-
-  if(!session?.user){
+  if (!session?.user) {
     redirect('/')
-  } 
+  }
 
   return (
     <div className="p-4">
@@ -23,9 +20,8 @@ export default async function Dashboard() {
 
       <Stats />
 
-
       <h2 className="text-2xl font-semibold mb-2">Últimas doações</h2>
       <DonationTable />
     </div>
-  );
+  )
 }

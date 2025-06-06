@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import Link from "next/link"
-import { Menu, LogOut } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { DialogTitle } from "@/components/ui/dialog"
+import { Button } from '@/components/ui/button'
+import { DialogTitle } from '@/components/ui/dialog'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { LogOut, Menu } from 'lucide-react'
+import Link from 'next/link'
+import { useState } from 'react'
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false)
@@ -19,9 +19,7 @@ export function MobileMenu() {
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-[240px] sm:w-[300px] p-5">
-        <DialogTitle>
-          Menu
-        </DialogTitle>
+        <DialogTitle>Menu</DialogTitle>
 
         <div className="flex flex-col gap-6 py-6">
           <Link

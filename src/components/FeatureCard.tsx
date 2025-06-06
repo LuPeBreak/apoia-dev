@@ -1,10 +1,10 @@
-import { Card } from "@/components/ui/card";
-import { ReactNode } from "react";
+import { Card } from '@/components/ui/card'
+import { ReactNode } from 'react'
 
 interface FeatureCardProps {
-  icon: ReactNode;
-  title: string;
-  description: string;
+  icon: ReactNode
+  title: string
+  description: string
 }
 
 export function FeatureCard({ icon, title, description }: FeatureCardProps) {
@@ -16,5 +16,5 @@ export function FeatureCard({ icon, title, description }: FeatureCardProps) {
       <h3 className="font-semibold text-lg">{title}</h3>
       <p className="text-gray-500 text-sm">{description}</p>
     </Card>
-  );
+  )
 }
