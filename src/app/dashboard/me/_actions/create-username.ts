@@ -47,6 +47,7 @@ export async function createUsernameAction(data: CreateUsernameSchema) {
 
     return { data: slug, error: null }
   } catch (error) {
+    console.log('Error creating username:', error)
     return {
       data: null,
       error: 'Erro ao criar o username. Tente novamente mais tarde.',

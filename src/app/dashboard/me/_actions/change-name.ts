@@ -5,7 +5,9 @@ import prisma from '@/lib/prisma'
 import { z } from 'zod'
 
 const changeNameSchema = z.object({
-  name: z.string().min(1, 'O nome deve ter pelo menos 1 caractere'),
+  name: z
+    .string({ message: 'O nome é obrigatório' })
+    .min(1, 'O nome deve ter pelo menos 1 caractere'),
 })
 
 type ChangeNameSchema = z.infer<typeof changeNameSchema>
