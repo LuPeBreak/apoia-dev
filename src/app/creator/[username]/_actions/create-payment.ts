@@ -7,7 +7,9 @@ import { z } from 'zod'
 const createPaymentSchema = z.object({
   slug: z.string().min(1, { message: 'Slug é obrigatório' }),
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
-  message: z.string().min(1, { message: 'Mensagem é obrigatória' }),
+  message: z
+    .string({ message: 'Mensagem é obrigatória' })
+    .min(5, { message: 'Mensagem deve ter pelo menos 5 caracteres' }),
   price: z.number().min(1500, { message: 'Preço mínimo é de R$15,00' }),
   creatorId: z.string(),
 })
@@ -19,14 +21,12 @@ export async function createPayment(data: CreatePaymentSchema) {
 
   if (!parsedData.success) {
     return {
-      data: null,
       error: parsedData.error.issues[0].message,
     }
   }
 
   if (!parsedData.data.creatorId) {
     return {
-      data: null,
       error: 'Criador não encontrado',
     }
   }
@@ -40,8 +40,7 @@ export async function createPayment(data: CreatePaymentSchema) {
 
     if (!creator) {
       return {
-        data: null,
-        error: 'Erro ao criar pagamento',
+        error: 'Erro ao criar pagamento, tente mais tarde',
       }
     }
 
@@ -78,23 +77,22 @@ export async function createPayment(data: CreatePaymentSchema) {
         transfer_data: {
           destination: creator.connectedStripeAccountId as string,
         },
-      },
-      metadata: {
-        donorName: parsedData.data.name,
-        donorMessage: parsedData.data.message,
-        donationId: donation.id,
+        metadata: {
+          donorName: parsedData.data.name,
+          donorMessage: parsedData.data.message,
+          donationId: donation.id,
+        },
       },
     })
 
     return {
-      data: session.id,
-      error: null,
+      sessionId: session.id,
     }
   } catch (error) {
     console.log('Error creating payment:', error)
     return {
       data: null,
-      error: 'Erro ao criar pagamento',
+      error: 'Erro ao criar pagamento, tente mais tarde',
     }
   }
 }
