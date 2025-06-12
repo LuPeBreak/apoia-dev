@@ -1,4 +1,4 @@
-import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -7,19 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { formatCurrencyFromCents, formatDate } from '@/utils/format'
+import { getCreatorDonations } from '../_data_access/get-creator-donations'
 
-const donations = [
-  {
-    id: '1',
-    donorName: 'João Silva',
-    donorMessage: 'Adoro seu trabalho!',
-    amount: 1000,
-    createdAt: new Date('2023-10-01T12:00:00Z'),
-  },
-]
-
-export function DonationTable() {
+export async function DonationTable({ userId }: { userId: string }) {
+  const { donations } = await getCreatorDonations(userId)
   return (
     <>
       {/* Versão para desktop */}
@@ -42,46 +34,50 @@ export function DonationTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {donations.map((donation) => (
-              <TableRow key={donation.id}>
-                <TableCell className="font-medium">
-                  {donation.donorName}
-                </TableCell>
-                <TableCell className="max-w-72">
-                  {donation.donorMessage}
-                </TableCell>
-                <TableCell className="text-center">{donation.amount}</TableCell>
-                <TableCell className="text-center">
-                  {donation.createdAt.toDateString()}
-                </TableCell>
-              </TableRow>
-            ))}
+            {donations &&
+              donations.map((donation) => (
+                <TableRow key={donation.id}>
+                  <TableCell className="font-medium">
+                    {donation.donorName}
+                  </TableCell>
+                  <TableCell className="max-w-72">
+                    {donation.donorMessage}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {formatCurrencyFromCents(donation.amount)}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {formatDate(donation.createdAt)}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>
 
       {/* Versão para mobile */}
       <div className="lg:hidden space-y-4">
-        {donations.map((donation) => (
-          <Card key={donation.id}>
-            <CardHeader>
-              <CardTitle className="text-lg">{donation.donorName}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-2">
-                {donation.donorMessage}
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-green-500 font-semibold">
-                  {donation.amount}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {donation.createdAt.toDateString()}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {donations &&
+          donations.map((donation) => (
+            <Card key={donation.id}>
+              <CardHeader>
+                <CardTitle className="text-lg">{donation.donorName}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-2">
+                  {donation.donorMessage}
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-green-500 font-semibold">
+                    {formatCurrencyFromCents(donation.amount)}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {formatDate(donation.createdAt)}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
       </div>
     </>
   )
