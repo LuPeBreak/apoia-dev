@@ -10,6 +10,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -87,75 +94,90 @@ export function FormDonate({ slug, creatorId }: FormDonateProps) {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nome</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Digite seu nome..."
-                  {...field}
-                  className="bg-white"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Card className="shadow-xl border-0 bg-white/90 backdrop-blur-sm hover:bg-white duration-300 h-fit">
+      <CardHeader>
+        <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900">
+          Apoiar
+        </CardTitle>
+        <CardDescription>
+          Sua Contribuição ajuda a manter o conteúdo!
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 mt-2"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Digite seu nome..."
+                      {...field}
+                      className="bg-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mensagem</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Digite sua mensagem..."
-                  {...field}
-                  className="bg-white h-32 resize-none"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Mensagem</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Digite sua mensagem..."
+                      {...field}
+                      className="bg-white h-32 resize-none"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Valor</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  className="flex items-center gap-3"
-                  defaultValue={field.value}
-                  onValueChange={field.onChange}
-                >
-                  {['15', '25', '35'].map((value) => (
-                    <div key={value} className="flex items-center gap-2">
-                      <RadioGroupItem value={value} id={value} />
-                      <Label className="text-lg" htmlFor={value}>
-                        R${value}
-                      </Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <FormField
+              control={form.control}
+              name="amount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Valor</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      className="flex items-center gap-3"
+                      defaultValue={field.value}
+                      onValueChange={field.onChange}
+                    >
+                      {['15', '25', '35'].map((value) => (
+                        <div key={value} className="flex items-center gap-2">
+                          <RadioGroupItem value={value} id={value} />
+                          <Label className="text-lg" htmlFor={value}>
+                            R${value}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Button disabled={form.formState.isSubmitting} type="submit">
-          {form.formState.isSubmitting ? 'Processando...' : 'Doar'}
-        </Button>
-      </form>
-    </Form>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              {form.formState.isSubmitting ? 'Processando...' : 'Doar'}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   )
 }
