@@ -2,11 +2,17 @@
 
 import prisma from '@/lib/prisma'
 
-export async function getCreatorDonations(userId: string) {
+export type Donation = {
+  id: string
+  amount: number
+  donorName: string
+  donorMessage: string
+  createdAt: Date
+}
+
+export async function getCreatorDonations(userId: string): Promise<Donation[]> {
   if (!userId) {
-    return {
-      error: 'Usuário não autenticado',
-    }
+    throw new Error('Usuário não autenticado')
   }
 
   try {
@@ -27,13 +33,9 @@ export async function getCreatorDonations(userId: string) {
       },
     })
 
-    return {
-      donations,
-    }
+    return donations
   } catch (error) {
     console.error('Erro ao obter doações:', error)
-    return {
-      error: 'Erro ao obter doações',
-    }
+    throw new Error('Erro ao obter doações')
   }
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -8,10 +10,31 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { formatCurrencyFromCents, formatDate } from '@/utils/format'
-import { getCreatorDonations } from '../_data_access/get-creator-donations'
+import { useQuery } from '@tanstack/react-query'
+import {
+  getCreatorDonations,
+  type Donation,
+} from '../_data_access/get-creator-donations'
 
-export async function DonationTable({ userId }: { userId: string }) {
-  const { donations } = await getCreatorDonations(userId)
+export function DonationTable({ userId }: { userId: string }) {
+  const {
+    data: donations,
+    status,
+    error,
+  } = useQuery<Donation[]>({
+    queryKey: ['creator-donations', userId],
+    queryFn: () => getCreatorDonations(userId),
+    refetchInterval: 10 * 1000,
+  })
+
+  if (status === 'pending') {
+    return <div>Carregando doações...</div>
+  }
+
+  if (status === 'error') {
+    return <div>Ocorreu um erro: {error.message}</div>
+  }
+
   return (
     <>
       {/* Versão para desktop */}
